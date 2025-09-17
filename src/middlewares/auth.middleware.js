@@ -1,22 +1,21 @@
-import jwt from "jsonwebtoken";
-
 import { UnauthorizedError } from "../utils/errors.js";
-import { ENV } from "../config/env.js";
+import { verifyToken } from "../utils/jwt.js";
 
 export const authenticate = (req, res, next) => {
-  const authHeader = req.headers.authorization;
+  const token = req.cookies?.accessToken; // 🔑 read from cookie
 
-  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+  if (!token) {
     return next(new UnauthorizedError("No token provided"));
   }
 
-  const token = authHeader.split(" ")[1];
-
   try {
-    const decoded = jwt.verify(token, ENV.JWT_SECRET);
-    req.user = decoded; // attach user payload (id, role, etc.) to request
+    const decoded = verifyToken(token);
+    if (!decoded) {
+      return next(new UnauthorizedError("Invalid or expired token"));
+    }
+    req.user = decoded;
     next();
   } catch (err) {
-    return next(new UnauthorizedError("Invalid token"));
+    return next(new UnauthorizedError("Invalid or expired token"));
   }
 };

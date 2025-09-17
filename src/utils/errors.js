@@ -1,4 +1,3 @@
-// src/utils/errors.js
 import CustomError from "./customError.js";
 
 export class BadRequestError extends CustomError {

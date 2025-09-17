@@ -1,6 +1,5 @@
-const mongoose = require("mongoose");
-const bcrypt = require("bcrypt");
-
+import mongoose from "mongoose";
+import bcrypt from "bcrypt";
 const addressSchema = new mongoose.Schema({
   street: { type: String, required: true },
   city: { type: String, required: true },
@@ -61,8 +60,8 @@ const userSchema = new mongoose.Schema(
     },
     addresses: [addressSchema],
     // For password reset functionality
-    // resetPasswordToken: String,
-    // resetPasswordExpire: Date,
+    resetPasswordToken: String,
+    resetPasswordExpire: Date,
   },
   {
     timestamps: true,
@@ -88,9 +87,11 @@ userSchema.methods.matchPassword = async function (enteredPassword) {
 userSchema.methods.toJSON = function () {
   const obj = this.toObject();
   delete obj.password;
+  delete obj._id;
   delete obj.resetPasswordToken;
   delete obj.resetPasswordExpire;
   return obj;
 };
 
-module.exports = mongoose.model("User", userSchema);
+const User = mongoose.model("User", userSchema);
+export default User;
