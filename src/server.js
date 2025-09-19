@@ -7,6 +7,7 @@ import { connectDB } from "./config/db.js";
 import errorHandler from "./middlewares/error.middleware.js";
 
 import memberRouter from "./routes/member.routes.js";
+import adminRouter from "./routes/admin.routes.js";
 
 const app = express();
 
@@ -16,6 +17,7 @@ app.use(cookieParser());
 connectDB();
 
 app.use("/api", memberRouter);
+app.use("/admin", adminRouter);
 
 app.use(errorHandler);
 

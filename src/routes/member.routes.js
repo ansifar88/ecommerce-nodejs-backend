@@ -7,7 +7,7 @@ const memberRouter = express.Router();
 
 memberRouter.use("/auth", userAuthRouter);
 
-memberRouter.use(authenticate);
+memberRouter.use(authenticate(['user']));
 
 memberRouter.use("/user", userProfileRouter);
 

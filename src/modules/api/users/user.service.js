@@ -5,3 +5,12 @@ export const getUserById = async (id) => {
     "-addresses -lastLogin -updatedAt -__v" 
   );
 };
+
+export const updateUserById = async (id, updateData) => {
+  return await User.findByIdAndUpdate(id, updateData, {
+    new: true,       
+    runValidators: true,
+  }).select(
+    "-addresses -lastLogin -updatedAt -__v" 
+  );
+};

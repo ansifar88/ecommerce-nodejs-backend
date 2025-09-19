@@ -24,6 +24,11 @@ export class UnauthorizedError extends CustomError {
     super(401, message);
   }
 }
+export class ForbiddenError extends CustomError {
+  constructor(message = "Unauthorized") {
+    super(403, message);
+  }
+}
 
 export class RequestValidationError extends CustomError {
   constructor(message = "validation failed", errors = []) {
